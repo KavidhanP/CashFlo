@@ -5,8 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.prog7311.c.data.dao.*
-import com.prog7311.c.dao.GoalDao
-import com.prog7311.c.dao.ProfileDao
 import com.prog7311.c.data.entity.Category
 import com.prog7311.c.data.entity.Entry
 import com.prog7311.c.data.entity.Goal
