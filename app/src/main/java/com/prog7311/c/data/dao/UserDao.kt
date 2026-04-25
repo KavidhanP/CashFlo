@@ -2,7 +2,7 @@ package com.prog7311.c.data.dao
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.prog7311.c.User
+import com.prog7311.c.data.entity.User
 
 @Dao
 interface UserDao {

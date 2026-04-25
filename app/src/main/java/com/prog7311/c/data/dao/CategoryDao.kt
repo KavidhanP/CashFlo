@@ -1,30 +1,20 @@
 package com.prog7311.c.data.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
-import com.prog7311.c.Category
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import com.prog7311.c.data.entity.Category
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface CategoryDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun insertCategory(category: Category): Long
 
-    @Update
-    suspend fun updateCategory(category: Category)
+    @Query("SELECT * FROM categories WHERE profileId = :profileId")
+    fun getCategoriesForProfile(profileId: Int): Flow<List<Category>>
 
-    @Delete
-    suspend fun deleteCategory(category: Category)
-
-    @Query("SELECT * FROM categories WHERE profileId = :profileId ORDER BY name ASC")
-    fun getCategoriesForProfile(profileId: Int): LiveData<List<Category>>
-
-    @Query("SELECT * FROM categories WHERE profileId = :profileId ORDER BY name ASC")
-    suspend fun getCategoriesForProfileOnce(profileId: Int): List<Category>
-
-    @Query("SELECT * FROM categories WHERE categoryId = :categoryId LIMIT 1")
-    suspend fun getCategoryById(categoryId: Int): Category?
-
-    @Query("DELETE FROM categories WHERE profileId = :profileId")
-    suspend fun deleteAllCategoriesForProfile(profileId: Int)
+    @Query("DELETE FROM categories WHERE categoryId = :categoryId")
+    suspend fun deleteCategory(categoryId: Int)
 }

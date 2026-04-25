@@ -1,32 +1,18 @@
-package com.prog7311.c.dao
+package com.prog7311.c.data.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
-import com.prog7311.c.Goal
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import com.prog7311.c.data.entity.Goal
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GoalDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGoal(goal: Goal): Long
+    suspend fun insertOrUpdateGoal(goal: Goal): Long
 
-    @Update
-    suspend fun updateGoal(goal: Goal)
-
-    @Delete
-    suspend fun deleteGoal(goal: Goal)
-
-    // Get goal for a specific month + year
     @Query("SELECT * FROM goals WHERE profileId = :profileId AND month = :month AND year = :year LIMIT 1")
-    suspend fun getGoalForMonth(profileId: Int, month: Int, year: Int): Goal?
-
-    // Get the most recently set goal (for displaying current target)
-    @Query("SELECT * FROM goals WHERE profileId = :profileId ORDER BY year DESC, month DESC LIMIT 1")
-    suspend fun getLatestGoal(profileId: Int): Goal?
-
-    @Query("SELECT * FROM goals WHERE profileId = :profileId ORDER BY year DESC, month DESC")
-    fun getAllGoalsForProfile(profileId: Int): LiveData<List<Goal>>
-
-    @Query("DELETE FROM goals WHERE profileId = :profileId")
-    suspend fun deleteAllGoalsForProfile(profileId: Int)
+    fun getGoalForMonth(profileId: Int, month: Int, year: Int): Flow<Goal?>
 }

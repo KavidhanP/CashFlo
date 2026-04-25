@@ -1,30 +1,20 @@
-package com.prog7311.c.dao
+package com.prog7311.c.data.dao
 
-import androidx.lifecycle.LiveData
-import androidx.room.*
-import com.prog7311.c.Profile
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.Query
+import com.prog7311.c.data.entity.Profile
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ProfileDao {
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     suspend fun insertProfile(profile: Profile): Long
 
-    @Update
-    suspend fun updateProfile(profile: Profile)
-
-    @Delete
-    suspend fun deleteProfile(profile: Profile)
-
-    @Query("SELECT * FROM profiles WHERE userId = :userId ORDER BY createdAt ASC")
-    fun getProfilesForUser(userId: Int): LiveData<List<Profile>>
-
-    @Query("SELECT * FROM profiles WHERE userId = :userId ORDER BY createdAt ASC")
-    suspend fun getProfilesForUserOnce(userId: Int): List<Profile>
-
-    @Query("SELECT * FROM profiles WHERE profileId = :profileId LIMIT 1")
-    suspend fun getProfileById(profileId: Int): Profile?
+    @Query("SELECT * FROM profiles WHERE userId = :userId")
+    fun getProfilesForUser(userId: Int): Flow<List<Profile>>
 
     @Query("DELETE FROM profiles WHERE profileId = :profileId")
-    suspend fun deleteProfileById(profileId: Int)
+    suspend fun deleteProfile(profileId: Int)
 }
